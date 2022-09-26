@@ -63,4 +63,95 @@ RSpec.describe Auction do
 
     expect(auction.potential_revenue).to eq(87)
   end
+
+  it "7. can list bidders" do
+    auction.add_item(item1)
+    auction.add_item(item2)
+    auction.add_item(item3)
+    auction.add_item(item4)
+    auction.add_item(item5)
+    item1.add_bid(attendee2, 20)
+    item1.add_bid(attendee1, 22)
+    item4.add_bid(attendee3, 50)
+    item3.add_bid(attendee2, 15)
+
+    expect(auction.bidders).to include("Megan", "Bob", "Mike")
+  end
+
+  it "8. can list bidders and their information" do
+    auction.add_item(item1)
+    auction.add_item(item2)
+    auction.add_item(item3)
+    auction.add_item(item4)
+    auction.add_item(item5)
+    item1.add_bid(attendee2, 20)
+    item1.add_bid(attendee1, 22)
+    item4.add_bid(attendee3, 50)
+    item3.add_bid(attendee2, 15)
+
+    expect(auction.bidder_info).to eq({
+                                       attendee1 =>
+                                          {
+                                            :budget => 50,
+                                            :items => [item1]
+                                          },
+                                       attendee2 =>
+                                          {
+                                            :budget => 75,
+                                            :items => [item1, item3]
+                                          },
+                                        attendee3 =>
+                                          {
+                                            :budget => 100,
+                                            :items => [item4]
+                                          }
+                                        })
+  end
+
+  it "9. creates participants info" do
+    auction.add_item(item1)
+    auction.add_item(item2)
+    auction.add_item(item3)
+    auction.add_item(item4)
+    auction.add_item(item5)
+    item1.add_bid(attendee2, 20)
+    item1.add_bid(attendee1, 22)
+    item4.add_bid(attendee3, 50)
+    item3.add_bid(attendee2, 15)
+
+    expect(auction.create_participants_info).to eq({
+                                       attendee1 =>
+                                          {
+                                            :budget => 50,
+                                            :items => []
+                                          },
+                                       attendee2 =>
+                                          {
+                                            :budget => 75,
+                                            :items => []
+                                          },
+                                        attendee3 =>
+                                          {
+                                            :budget => 100,
+                                            :items => []
+                                          }
+                                        })
+  end
+
+  it "10. adds items to bidders' bid items list" do
+    auction.add_item(item1)
+    auction.add_item(item2)
+    auction.add_item(item3)
+    auction.add_item(item4)
+    auction.add_item(item5)
+    item1.add_bid(attendee2, 20)
+    item1.add_bid(attendee1, 22)
+    item4.add_bid(attendee3, 50)
+    item3.add_bid(attendee2, 15)
+
+    auction.bidders_add_items
+    expect(attendee1.items_bid).to eq([item1])
+    expect(attendee2.items_bid).to eq([item1, item3])
+    expect(attendee3.items_bid).to eq([item4])
+  end
 end

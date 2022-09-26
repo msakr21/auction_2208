@@ -13,4 +13,12 @@ RSpec.describe Attendee do
     expect(attendee.budget).to eq(50)
   end
 
+  it "3. has a readable and writable array attribute 'items_bid' that is blank by default" do
+    expect(attendee.items_bid).to eq([])
+    attendee.items_bid << 1
+    expect(attendee.items_bid).to eq([1])
+    attendee.items_bid << "7amada"
+    expect(attendee.items_bid).to eq([1, "7amada"])
+  end
+
 end
