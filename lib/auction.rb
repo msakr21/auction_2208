@@ -1,8 +1,11 @@
 class Auction
-  attr_reader :items
+  attr_reader :items,
+              :date
 
   def initialize
     @items = []
+    @date = ""
+    set_date
   end
 
   def add_item(item)
@@ -71,5 +74,9 @@ class Auction
     conclusion = Hash.new(0)
     fill_conclusion(conclusion)
     conclusion
+  end
+
+  def set_date
+    @date = Date.today.strftime "%d/%m/%Y"
   end
 end

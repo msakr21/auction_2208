@@ -171,4 +171,12 @@ RSpec.describe Auction do
 
     expect(auction.close_auction).to eq({item1 => attendee1, item2 => "Not Sold", item4 => attendee3, item3 => attendee2, item5 => attendee1})
   end
+
+  it "12. has a date attribute" do
+    allow(Date).to receive(:today).and_return(Date.new(2020, 9, 20))
+    expect(auction.date).to eq("20/09/2020")
+
+    allow(Date).to receive(:today).and_return(Date.new(2020, 11, 20))
+    expect(auction.date).to eq("20/09/2020")
+  end
 end
