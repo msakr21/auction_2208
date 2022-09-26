@@ -1,4 +1,5 @@
 require 'rspec'
+require 'date'
 require './lib/item'
 require './lib/attendee'
 require './lib/auction'
@@ -153,5 +154,21 @@ RSpec.describe Auction do
     expect(attendee1.items_bid).to eq([item1])
     expect(attendee2.items_bid).to eq([item1, item3])
     expect(attendee3.items_bid).to eq([item4])
+  end
+
+  it "11. can close auction" do
+    auction.add_item(item1)
+    auction.add_item(item2)
+    auction.add_item(item3)
+    auction.add_item(item4)
+    auction.add_item(item5)
+    item1.add_bid(attendee1, 22)
+    item1.add_bid(attendee2, 20)
+    item4.add_bid(attendee2, 30)
+    item4.add_bid(attendee3, 50)
+    item3.add_bid(attendee2, 15)
+    item5.add_bid(attendee1, 35)
+
+    expect(auction.close_auction).to eq({item1 => attendee1, item2 => "Not Sold", item4 => attendee3, item3 => attendee2, item5 => attendee1})
   end
 end

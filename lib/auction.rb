@@ -56,4 +56,20 @@ class Auction
     bidders_add_items
     create_participants_info
   end
+
+  def fill_conclusion(conclusion)
+    items.each do |item|
+      if item.bids != {}
+        conclusion[item] = item.bids.key(item.current_high_bid)
+      else
+        conclusion[item] = "Not Sold"
+      end
+    end
+  end
+
+  def close_auction
+    conclusion = Hash.new(0)
+    fill_conclusion(conclusion)
+    conclusion
+  end
 end

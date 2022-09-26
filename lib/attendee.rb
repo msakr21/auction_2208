@@ -10,5 +10,4 @@ class Attendee
     @budget = attendee_info[:budget][1..length_of_budget].to_i
     @items_bid= []
   end
-
 end
