@@ -169,14 +169,18 @@ RSpec.describe Auction do
     item3.add_bid(attendee2, 15)
     item5.add_bid(attendee1, 35)
 
-    expect(auction.close_auction).to eq({item1 => attendee1, item2 => "Not Sold", item4 => attendee3, item3 => attendee2, item5 => attendee1})
+    expect(auction.close_auction).to eq({item1 => attendee2, item2 => "Not Sold", item3 => attendee2, item4 => attendee3, item5 => attendee1})
   end
 
-  it "12. has a date attribute" do
+  it "12. has a date attribute which is set upon creation." do
     allow(Date).to receive(:today).and_return(Date.new(2020, 9, 20))
     expect(auction.date).to eq("20/09/2020")
+  end
 
-    allow(Date).to receive(:today).and_return(Date.new(2020, 11, 20))
-    expect(auction.date).to eq("20/09/2020")
+  it "13. date attribute doesn't change  after creation." do
+    expect(auction.date).to eq("26/09/2022")
+
+    allow(Date).to receive(:today).and_return(Date.new(2022, 11, 20))
+    expect(auction.date).to eq("26/09/2022")
   end
 end

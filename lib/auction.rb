@@ -63,14 +63,37 @@ class Auction
   def fill_conclusion(conclusion)
     items.each do |item|
       if item.bids != {}
-        conclusion[item] = item.bids.key(item.current_high_bid)
+        sell_item(conclusion, item)
       else
         conclusion[item] = "Not Sold"
       end
     end
   end
 
+  def close_all_bids
+    @items.each do |item|
+      item.close_bidding
+    end
+  end
+
+  def sell_item(conclusion, item)
+    bid_amounts = item.bids.values
+    loop do
+      # require 'pry'; binding.pry
+      if item.bids.key(item.current_high_bid).budget >= item.current_high_bid
+        conclusion[item] = item.bids.key(item.current_high_bid)
+        item.bids.key(item.current_high_bid).deduct_from_budget(item.current_high_bid)
+        break
+      elsif bid_amounts == []
+        break
+      else
+        bid_amounts.delete(item.current_high_bid)
+      end
+    end
+  end
+
   def close_auction
+    close_all_bids
     conclusion = Hash.new(0)
     fill_conclusion(conclusion)
     conclusion
